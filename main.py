@@ -22,20 +22,17 @@ def init(args):
 def add(args):
     r2d2_path = pathlib.Path.home().joinpath('.r2d2')
     file_path = pathlib.Path(args.file).resolve()
-    target_path = r2d2_path.joinpath(file_path.name)
+    target_path = r2d2_path.joinpath(file_path.relative_to('/'))
     if target_path.exists():
         print('Config file with same name is already managed by r2d2.')
         sys.exit(1)
+    target_path.parent.mkdir(parents=True, exist_ok=True)
     file_path.rename(target_path)
     try:
         file_path.symlink_to(target_path)
     except FileExistsError:
         print('It appears that this file is already managed by r2d2.')
         sys.exit(1)
-    with open(target_path, 'r+') as f:
-        content = f.read()
-        f.seek(0, 0)
-        f.write('# ' + str(file_path) + '\n' + content)
     repo = git.Repo(path=str(r2d2_path))
     repo.index.add([str(target_path)])
 

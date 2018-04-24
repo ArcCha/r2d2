@@ -1,8 +1,7 @@
 # Features
 
-- handle git remotes and pushing
 - add bootstrap command
-- add remote handling (currently need to add `origin` manually)
+- detect if repository exists
 
 # Bugs
 

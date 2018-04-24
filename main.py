@@ -4,7 +4,7 @@ import git
 import pathlib
 import shutil
 import sys
-
+from git.exc import GitCommandError
 
 def init(args):
     r2d2_path = pathlib.Path.home().joinpath('.r2d2')
@@ -40,11 +40,21 @@ def add(args):
 def sync(args):
     r2d2_path = pathlib.Path.home().joinpath('.r2d2')
     repo = git.Repo(path=str(r2d2_path))
-    origin = repo.remotes.origin
-    origin.fetch()
-    repo.index.commit(args.message)
-    origin.push(refspec='refs/heads/master:refs/heads/to-upstream')
+    for remote in repo.remotes:
+        remote.fetch()
+        changes = repo.index.diff(None, staged=True)
+        if changes:
+            repo.index.commit(args.message)
+        try:
+            remote.pull(refspec='refs/heads/master:refs/heads/master')
+        except GitCommandError:
+            print('Pulling from remote ', str(remote), ' failed')
+        remote.push(refspec='refs/heads/master:refs/heads/master')
 
+def add_remote(args):
+    r2d2_path = pathlib.Path.home().joinpath('.r2d2')
+    repo = git.Repo(path=str(r2d2_path))
+    repo.create_remote(args.name, url=args.url)
 
 def main():
     parser = argparse.ArgumentParser(prog='r2d2')
@@ -61,6 +71,11 @@ def main():
     parser_sync = subparsers.add_parser('sync')
     parser_sync.add_argument('-m', '--message')
     parser_sync.set_defaults(func=sync)
+
+    parser_remote = subparsers.add_parser('remote')
+    parser_remote.add_argument('-n', '--name')
+    parser_remote.add_argument('-u', '--url')
+    parser_remote.set_defaults(func=add_remote)
 
     args = parser.parse_args()
     if hasattr(args, 'func'):

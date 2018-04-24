@@ -37,6 +37,15 @@ def add(args):
     repo.index.add([str(target_path)])
 
 
+def sync(args):
+    r2d2_path = pathlib.Path.home().joinpath('.r2d2')
+    repo = git.Repo(path=str(r2d2_path))
+    origin = repo.remotes.origin
+    origin.fetch()
+    repo.index.commit(args.message)
+    origin.push(refspec='refs/heads/master:refs/heads/to-upstream')
+
+
 def main():
     parser = argparse.ArgumentParser(prog='r2d2')
     subparsers = parser.add_subparsers()
@@ -48,6 +57,10 @@ def main():
     parser_add = subparsers.add_parser('add')
     parser_add.add_argument('file')
     parser_add.set_defaults(func=add)
+
+    parser_sync = subparsers.add_parser('sync')
+    parser_sync.add_argument('-m', '--message')
+    parser_sync.set_defaults(func=sync)
 
     args = parser.parse_args()
     if hasattr(args, 'func'):

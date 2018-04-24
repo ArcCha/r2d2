@@ -2,6 +2,7 @@
 
 - handle git remotes and pushing
 - add bootstrap command
+- add remote handling (currently need to add `origin` manually)
 
 # Bugs
 

@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 import argparse
-import git
 import pathlib
 import shutil
 import sys
+
+import git
 from git.exc import GitCommandError
 
+
 def init(args):
+    """Initialize r2d2, git-based repository in user's home directory.
+
+    Accepted arguments:
+
+    force -- removes `.r2d2` folder if it already exists.
+    """
     r2d2_path = pathlib.Path.home().joinpath('.r2d2')
     if args.force:
         shutil.rmtree(r2d2_path)
@@ -20,11 +28,20 @@ def init(args):
 
 
 def add(args):
+    """Add file to r2d2 repository and create symlink in it's place.
+
+    Full file path is preserved under `.r2d2` folder so it can be
+    easily identified and synced with live system.
+
+    Accepted arguments:
+
+    file - path to a file to be added.
+    """
     r2d2_path = pathlib.Path.home().joinpath('.r2d2')
     file_path = pathlib.Path(args.file).resolve()
     target_path = r2d2_path.joinpath(file_path.relative_to('/'))
     if target_path.exists():
-        print('Config file with same name is already managed by r2d2.')
+        print('File with same name is already managed by r2d2.')
         sys.exit(1)
     target_path.parent.mkdir(parents=True, exist_ok=True)
     file_path.rename(target_path)
@@ -38,6 +55,12 @@ def add(args):
 
 
 def sync(args):
+    """Syncs local repository with remotes.
+
+    Accepted arguments:
+
+    message - git commit message to be used if there is a need for a commit.
+    """
     r2d2_path = pathlib.Path.home().joinpath('.r2d2')
     repo = git.Repo(path=str(r2d2_path))
     for remote in repo.remotes:
@@ -51,10 +74,19 @@ def sync(args):
             print('Pulling from remote ', str(remote), ' failed')
         remote.push(refspec='refs/heads/master:refs/heads/master')
 
+
 def add_remote(args):
+    """Add remote repository.
+
+    Accepted arguments:
+
+    name - remote name
+    url - url pointing to remote repository
+    """
     r2d2_path = pathlib.Path.home().joinpath('.r2d2')
     repo = git.Repo(path=str(r2d2_path))
     repo.create_remote(args.name, url=args.url)
+
 
 def main():
     parser = argparse.ArgumentParser(prog='r2d2')

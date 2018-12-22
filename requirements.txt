@@ -1,3 +1,29 @@
-gitdb2==2.0.3
-GitPython==2.1.8
-smmap2==2.0.3
+name: r2d2
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - altgraph=0.15=py_0
+  - ca-certificates=2018.11.29=ha4d7672_0
+  - certifi=2018.11.29=py36_1000
+  - gitdb2=2.0.5=py_0
+  - gitpython=2.1.11=py_0
+  - macholib=1.11=py_0
+  - openssl=1.0.2p=h470a237_1
+  - pip=18.1=py36_1000
+  - pycrypto=2.6.1=py36h470a237_2
+  - pyinstaller=3.4=py36ha92aebf_0
+  - python=3.6.6=h5001a0f_3
+  - setuptools=40.6.3=py36_0
+  - smmap2=2.0.5=py_0
+  - wheel=0.32.3=py36_0
+  - libedit=3.1.20170329=h6b74fdf_2
+  - libffi=3.2.1=hd88cf55_4
+  - libgcc-ng=8.2.0=hdf63c60_1
+  - libstdcxx-ng=8.2.0=hdf63c60_1
+  - ncurses=6.1=he6710b0_1
+  - readline=7.0=h7b6447c_5
+  - sqlite=3.25.3=h7b6447c_0
+  - tk=8.6.8=hbc83047_0
+  - xz=5.2.4=h14c3975_4
+  - zlib=1.2.11=h7b6447c_3

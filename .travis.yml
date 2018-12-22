@@ -14,6 +14,8 @@ install:
   - conda env create -q -n test-environment -f env.yml
   - source activate test-environment
   - pyinstaller main.py -n r2d2 --onefile
+script:
+  - echo "skipping tests"
 deploy:
   provider: releases
   skip_cleanup: true

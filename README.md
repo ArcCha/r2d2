@@ -23,3 +23,18 @@ This command will create `~/.r2d2` directory and initialize empty git repository
 ```
 
 This command will move the contents of `file` into `~/.r2d2` directory preserving the full path of `file` (`~/.r2d2` will be treated as a prefix) and stage it in the repository.
+
+
+# Development
+
+## Conda environment
+
+```
+conda create -f requirements.txt
+```
+
+## Freezing - PyInstaller
+
+```
+pyinstaller main.py -n r2d2 --onefile
+```

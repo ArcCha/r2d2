@@ -1,7 +1,7 @@
 dist: xenial
 language: python
 python:
-  - "3.6"
+  - '3.6'
 install:
   - sudo apt-get update
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -19,10 +19,9 @@ script:
 deploy:
   provider: releases
   skip_cleanup: true
-  api_key: "$GITHUB_TOKEN"
-  file_glob: true
-  file:
-  - dist/r2d2
+  api_key:
+    secure: VJp0ZWhJXS0KwN+GJcWdIJXD4Ct8E0sGQEGaoYCc+06i7rBru9177WClhIm/Yh8pWCvGfUvggVQombIlceU7jzghgIhzVrYpwelX62tVS3renlepVWMj8mnkLdMSAl2jIhYeP02B+N0PHwYUaWrufJiMWyXvizw2F60ZIp4FpP3JZJy0yXn+/nlk22szZGW5b6SrJ1lcNiUEdAZus2phwqLinC7Ig03r+WndkfSkdXznLsTqXVGOx+sPN3gly1+gmYUH2yDU+jdqTcNUz9UpZM0Opa/PdT056r62rcoLFYxhxQFhdBGpDUWmkSD+ykkMJa1R2LhH9jlg1oozlLi8n81SLf3rsc0d5j0PCb1T3JebX8ShT18fYyKwieIEHgTG/sgSGN4hxBiZmDsv1XB9Qyg3ujt3zA5O8c6zuiJtJUOVrpdns+leVTbO3nhCd6K9RHGJiMT1LEpTMwNSAFEjsy2+RQ/3Nvq6JkWt5f6s8exPnYB5Mr1PgKOynaiE0M1EF/bRXB3W+VGikvNAGdjdrv9eDcxREoPmXto3wkPcWe4IPDaiKLuhm3C0XSVJ99HeavziKmVBmk0S9WLARGQDxwog5hmbY5UOsVbVk7m74pZfxcc8JtYOb5gv32mA2fawCmHQ0O8YQoSe2VCXqjaZMracIPlzNGZkp9uKsNFSxGk=
+  file: dist/r2d2
   on:
     repo: ArcCha/r2d2
     tags: true

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import os
 import pathlib
 import shutil
 import sys
@@ -88,6 +89,21 @@ def add_remote(args):
     repo.create_remote(args.name, url=args.url)
 
 
+def check_integrity(args):
+    """Check if every file in r2d2 repository is correctly symlinked to live system.
+
+    """
+    r2d2_path = pathlib.Path.home().joinpath('.r2d2')
+    for dirpath, dirnames, filenames in os.walk(r2d2_path):
+        if dirpath.startswith(str(r2d2_path / '.git')):
+            continue
+        for filename in filenames:
+            file_path = pathlib.Path(dirpath) / filename
+            symlink_path = pathlib.Path('/') / file_path.relative_to(r2d2_path)
+            if not symlink_path.is_symlink():
+                print(str(symlink_path) + ' is not a symlink.')
+
+
 def main():
     parser = argparse.ArgumentParser(prog='r2d2')
     subparsers = parser.add_subparsers()
@@ -108,6 +124,9 @@ def main():
     parser_remote.add_argument('-n', '--name')
     parser_remote.add_argument('-u', '--url')
     parser_remote.set_defaults(func=add_remote)
+
+    parser_check = subparsers.add_parser('check')
+    parser_check.set_defaults(func=check_integrity)
 
     args = parser.parse_args()
     if hasattr(args, 'func'):

@@ -1,0 +1,27 @@
+dist: xenial
+language: python
+python:
+  - "3.6"
+install:
+  - sudo apt-get update
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  - conda create -q -n test-environment -f requirements.txt
+  - source activate test-environment
+  - pyinstaller main.py -n r2d2 --onefile
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key: "$GITHUB_TOKEN"
+  file_glob: true
+  file:
+  - dist/r2d2
+  on:
+    repo: ArcCha/r2d2
+    tags: true
+    branch: master
